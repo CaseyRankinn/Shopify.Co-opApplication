@@ -1,34 +1,57 @@
 # Winter 2022 Data Science Intern Challenge 
 ## Question 1: Given some sample data, write a program to answer the following: 
 
+
+
+
 On Shopify, we have exactly 100 sneaker shops, and each of these shops sells only one model of shoe.
 We want to do some analysis of the average order value (AOV). When we look at orders data over a 30 day window, we naively calculate an AOV of $3145.13.
 Given that we know these shops are selling sneakers, a relatively affordable item, something seems wrong with our analysis. 
 
 ### a) Think about what could be going wrong with our calculation. Think about a better way to evaluate this data.
-      
-- How I approached this problem was simple. I thought to myself, what makes this data "incorrect"? When I quickly skimmed 
-through the dataset there were few large numbers that were most like the result of the average calculation outcome as $3145.13. I rearranged the numbers in the column
-from smallest value to largest value and I saw that the numbers 704000, 154350, 102900, 77175, 51450, 25725 didn't match with the average data with the overall 
-data set of order_amount, as there was a big jump from 1760 to 25725. These numbers are the ouliers and are effecting the accuracy of the data. 
 
-- Therefore, the issue with this calculation is that there are a few values under the order_amounts column that jump a large amount comparative to the rest of the dataset.
-A better method to calculate this data would be to remove these outliers and then calculate the average (mean).
-- Another method to solving this problem: If one did not want to remove any data from the data set, it would be appropriate in this case to find the median instead. 
-Since the dataset is large and a majority of the values fall withing a range, finding the median would be more accurate than the mean. 
+• On initial inspection, the AOV is skewed and needs to be investigated. Further analysis using simple excel statistics (COUNTIF) revealed that approx. 98% of the amounts were less than $1,000 per order and 71 items were very large orders (greater than $25k).   
+• I then looked at each order and took the value of each unit.  I.e. I averaged the Order by the number of items of each order.  This revealed the unit costs to be between $90 and $352 of most orders
+
+• 46 orders (less than 1%) had unit costs of $25,725 – all ordered from shop_ID were No. 78.  All these inspections were a series of sorts and countifs.
+
+• SHOP_ID 42 and USER_ID 607 showed 2000 orders of a total of $704,000.  This equates to $352/item well inside the norm of affordable sneakers.      
+
+There are a number of value added information that can be used to properly reflect the sales.  Since all the sales occurred in March 2017.  We can note the following:
+
+• $15,725,640.00 sales in March 2017 (5000 orders)
+
+• 4938 orders with an AOV of sales under $2,000.  Using an “Average IF” function results in an AOV of $302.58
+
+• 46 orders of $25,725 / unit (Shop_ID: 78)
+
+• 17 orders with a value of $704,000 each for a unit cost of $352.
+
+Although, even after correcting this data from Shop_Id: 78, the AOV was still $2696.36, which seems too high for this data set. Therefore by removing the 17 orders of 704,000$ as outliers would make a more useful and reasonable average. 
   
 
 ### b) What metric would you report for this dataset?
 
-- The metric I would use for this dataset is to find the median value instead of the mean because you are still able to keep all of the data in the problem and still have 
-an accurate evaluation. This is a great example of the importance of data analysis because we are able to interperate the data and improve the efficiency of the dataset.  
+• It is important to break down the data in segments and parts to identify the reasons for the large anomalous data, if any.  The data set may reveal reasonable outcomes … or in the case of  shop_id 78, perhaps a problem with the ordering system that is shifting the decimal system from; $257.25 to $25,725, $514.50 to 51,450, $771.75 to $77,175, $1029.00 to $102,900, $1543.50 to $154,350. 
 
+• If we take this system correction into account, then the AOV for the entire 5000 orders is: $2696.36
 
+• Corrected total sales for March 2017 is $13,484,482.50
 
+• With $2696.36 as an average still seeming too high for this dataset, I would remove the 17 orders with a value of $704,000 to get a more accuarate average.  
 
 ### c) What is its value?
-- By removing the outliers (704000, 154350, 102900, 77175, 51450, 25725) from the data set, the average(median) would be : $302.58
-- By not changing the data and calculating the median, the average would be: $284.00
+
+Prefered Solution:
+
+• By correcting the data for Shop_Id 78, and removing the 17 orders of $704,000 as ouliers the average(mean) would be: $303.24
+
+Other Solutions:
+
+• By removing the "bad data" as outliers (704000, 154350, 102900, 77175, 51450, 25725) from the data set, the average(mean) would be : $302.58
+
+• If we are going to present the average number as the economic situation, we tend to use the mean, generally after removing the outliers. In this case with many of the values being in a range and by not changing the data and calculating the median, would be: $284.00
+
 
 ## Question 2: For this question you’ll need to use SQL. 
 Follow this link to access the data set required for the challenge. 
